@@ -3,10 +3,14 @@
   "compilerOptions": {
     "strict": true,
     "jsx": "react-jsx",
-
     "baseUrl": ".",
     "paths": {
       "~/*": ["src/*"]
-    }
-  }
+    },
+    "types": ["nativewind/types"] // Adiciona os tipos do NativeWind
+  },
+  "include": [
+    "nativewind-env.d.ts", // Inclui o arquivo de tipos do NativeWind
+    "src/**/*" // Inclui todos os arquivos dentro de src
+  ]
 }
