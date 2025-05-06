@@ -1,8 +1,9 @@
 // filepath: /Users/lucas/Library/CloudStorage/OneDrive-Pessoal/prochild/src/routes.ts
 const routes = {
   home: "/",
-  register: "/register/register",
-  login: "/login/login"
+  register: "/auth/register/register",
+  login: "/auth/login/login",
+  forgotPassword: "auth/forgot-password/forgot-password"
 };
 
 export default routes;

@@ -1,7 +1,9 @@
 import { View, Text, TextInput, TouchableOpacity, Image } from "react-native";
 import { Eye } from "lucide-react-native";
-import GoogleIcon from "../../assets/svg/google.svg"; // Certifique-se de que o caminho está correto
-import GovIcon from "../../assets/svg/govbr.png"; // Ajuste o caminho para o PNG
+import GoogleIcon from "../../../assets/svg/google.svg";
+import GovIcon from "../../../assets/svg/govbr.png"; 
+import routes from "~/routes/routes";
+import { Link } from "expo-router";
 
 export default function Register() {
   return (
@@ -11,13 +13,11 @@ export default function Register() {
         <TouchableOpacity className="mr-2 flex-1 items-center rounded-lg bg-inputColor py-2">
           <Image
             source={GovIcon}
-            style={{ width: 30, height: 30, resizeMode: "contain" }}
+            style={{ width: 40, height: 40, resizeMode: "contain" }}
           />
-          <Text className="mt-2 text-sm font-medium text-black">Gov.br</Text>
         </TouchableOpacity>
         <TouchableOpacity className="ml-2 flex-1 items-center flex-row justify-center gap-2 rounded-lg bg-inputColor py-2">
-          <GoogleIcon width={20} height={20} /> 
-          <Text className="text-sm font-medium text-black">Google</Text>
+          <GoogleIcon width={25} height={25} /> 
         </TouchableOpacity>
       </View>
 
@@ -41,16 +41,19 @@ export default function Register() {
       </View>
 
       <TouchableOpacity className="mb-6">
-        <Text className="text-right text-gray-500">Esqueceu sua senha?</Text>
+        <Link href={routes.forgotPassword} className="text-right underline text-gray-500">Esqueceu sua senha?</Link>
       </TouchableOpacity>
 
       <TouchableOpacity className="mb-6 items-center rounded-lg bg-primaryColor py-4">
         <Text className="text-lg font-bold text-white">Login</Text>
       </TouchableOpacity>
 
-      <Text className="text-center text-gray-500">
-        Não tem uma conta? <Text className="font-bold text-primaryColor">Crie uma conta!</Text>
-      </Text>
+      <View className="flex-row justify-center">
+        <Text className="text-gray-500">Não tem uma conta? </Text>
+        <TouchableOpacity>
+          <Link href={routes.register} className="font-bold text-primaryColor">Criar conta</Link>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
