@@ -6,7 +6,7 @@ export default function Home(){
   return(
     <View className="items-center justify-center flex">
       <Text className="text-red-500">
-       <Link href={routes.register}>Eaii</Link> 
+       <Link href={routes.login}>Eaii</Link> 
       </Text>
     </View>
   )
