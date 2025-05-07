@@ -1,5 +1,5 @@
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
-import BackButton from "~/components/headerButtons/BackButton";
+import BackButton from "~/components/headerButtons/BackButton/backButton";
 
 export default function ForgotPassword() {
   return (

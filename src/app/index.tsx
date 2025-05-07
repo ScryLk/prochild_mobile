@@ -9,13 +9,16 @@ export default function Home() {
         <View className="w-full">
           <Link href={routes.login}>Login</Link>
         </View>
-        <View>
+        <View className='w-full'>
           <Link rel="stylesheet" href={routes.register}>
             Cadastro
           </Link>
         </View>
-        <View>
+        <View className='w-full'>
           <Link href={routes.forgotPassword}>Esqueci minha senha</Link>
+        </View>
+        <View>
+          <Link href={routes.homePage}>Inicio</Link>
         </View>
       </Text>
     </View>
