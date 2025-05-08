@@ -9,7 +9,9 @@ module.exports = {
         "primaryColor": "#3461FD",
         "textColor": "#1573FE",
         "inputColor": "#F5F9FE",
-        "placeholderColor": "#7C8BA0"
+        "placeholderColor": "#7C8BA0",
+        "backgroundColor": "#F2F2F2",
+        
       },
 
       fontFamily: {

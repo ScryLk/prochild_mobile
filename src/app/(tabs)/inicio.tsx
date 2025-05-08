@@ -1,7 +1,10 @@
-import { Text } from "react-native"
+import { Text, View } from 'react-native';
+import Categories from '~/components/categories/categories';
 
 export default function Home() {
-  return(
-   <Text>Ola</Text>
-  )
+  return (
+    <View className='items-center w-screen justify-center'>
+      <Categories />
+    </View>
+  );
 }
