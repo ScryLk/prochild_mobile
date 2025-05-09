@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import * as LucideIcons from 'lucide-react-native'; // Importa todos os ícones do Lucide
 
 type Category = {
@@ -35,6 +35,11 @@ export default function Categories() {
     fetchCategories();
   }, []);
 
+  const handleCategoryPress = (category: Category) => {
+    // Exemplo: Exibe um alerta com as informações da categoria
+    Alert.alert('Categoria Selecionada', `Nome: ${category.nome}\nCor: ${category.cor}`);
+  };
+
   if (loading) {
     return (
       <View className="flex-1 items-center justify-center">
@@ -51,13 +56,17 @@ export default function Categories() {
             const Icon = LucideIcons[category.icone_id] as React.ComponentType; // Garante que Icon é um componente React
 
             return (
-              <TouchableOpacity key={category.id} className="mb-4 w-[30%]">
+              <TouchableOpacity
+                key={category.id}
+                className="mb-4 w-[30%]"
+                onPress={() => handleCategoryPress(category)} // Atribui a ação ao pressionar
+              >
                 <View className="relative h-[118px] items-center justify-center rounded-md border border-black bg-white">
                   <View
                     className="absolute top-4 h-[52px] w-[52px] items-center justify-center rounded-full"
-                    style={{ backgroundColor: category.cor }} // Atribui a cor dinâmica
+                    style={{ backgroundColor: category.cor }}
                   >
-                    {Icon ? <Icon /> : null}
+                    {Icon ? <Icon color="white" size={24} /> : null}
                   </View>
                   <View className="absolute bottom-4 items-center">
                     <Text className="text-center font-inter">{category.nome}</Text>
