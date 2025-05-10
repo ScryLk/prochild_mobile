@@ -19,9 +19,8 @@ export default function Categories() {
         const response = await fetch('http://127.0.0.1:8000/categories/categories/');
         const data = await response.json();
 
-        // Verifica se a resposta contém a propriedade 'success' com um array
         if (data.success && Array.isArray(data.success)) {
-          setCategories(data.success); // Define o array de categorias no estado
+          setCategories(data.success); 
         } else {
           console.error('Os dados retornados não são um array:', data);
         }
@@ -36,7 +35,6 @@ export default function Categories() {
   }, []);
 
   const handleCategoryPress = (category: Category) => {
-    // Exemplo: Exibe um alerta com as informações da categoria
     Alert.alert('Categoria Selecionada', `Nome: ${category.nome}\nCor: ${category.cor}`);
   };
 
@@ -53,7 +51,11 @@ export default function Categories() {
       <View className="flex flex-row flex-wrap justify-between">
         {Array.isArray(categories) &&
           categories.map((category) => {
-            const Icon = LucideIcons[category.icone_id] as React.ComponentType; // Garante que Icon é um componente React
+            // Verifica se o ícone existe, caso contrário, usa um ícone padrão
+            const Icon = LucideIcons[category.icone_id] as React.ComponentType | undefined;
+            const DefaultIcon = LucideIcons["AlertCircle"]; // Ícone padrão
+
+            console.log("Ícone ID:", category.icone_id); // Log para verificar o ícone
 
             return (
               <TouchableOpacity
@@ -66,7 +68,7 @@ export default function Categories() {
                     className="absolute top-4 h-[52px] w-[52px] items-center justify-center rounded-full"
                     style={{ backgroundColor: category.cor }}
                   >
-                    {Icon ? <Icon color="white" size={24} /> : null}
+                    {Icon ? <Icon  /> : <DefaultIcon color="white" size={24} />}
                   </View>
                   <View className="absolute bottom-4 items-center">
                     <Text className="text-center font-inter">{category.nome}</Text>

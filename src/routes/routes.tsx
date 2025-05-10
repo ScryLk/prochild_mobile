@@ -4,7 +4,8 @@ const routes = {
   register: "/auth/register/register",
   login: "/auth/login/login",
   forgotPassword: "auth/forgot-password/forgot-password",
-  homePage: "/(tabs)/inicio"
+  homePage: "/(tabs)/inicio",
+  trainings: "pages/trainings"
 };
 
-export default routes;
+export default routes;  

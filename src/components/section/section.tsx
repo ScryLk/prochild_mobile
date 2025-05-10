@@ -5,7 +5,7 @@ import * as LucideIcons from "lucide-react-native";
 type Category = {
   id: string;
   nome: string;
-  cor: string;
+  cor: string; // Adicionado o campo 'cor'
   icone_id: keyof typeof LucideIcons;
 };
 
@@ -82,16 +82,20 @@ export default function Section() {
           <View className="flex flex-row flex-wrap justify-between mt-4">
             {categoriesBySection[section.id] && categoriesBySection[section.id].length > 0 ? (
               categoriesBySection[section.id].map((category) => {
-                const Icon = LucideIcons[category.icone_id] as React.ComponentType;
+                const Icon = LucideIcons[category.icone_id] as React.ComponentType | undefined;
+                const DefaultIcon = LucideIcons["AlertCircle"]; // Ícone padrão
+
                 return (
                   <TouchableOpacity key={category.id} className="mb-4 w-[30%]">
                     <View className="relative h-[118px] items-center justify-center rounded-md border border-black bg-white">
+                      {/* Círculo com cor dinâmica */}
                       <View
                         className="absolute top-4 h-[52px] w-[52px] items-center justify-center rounded-full"
-                        style={{ backgroundColor: category.cor }}
+                        style={{ backgroundColor: category.cor || "#D3D3D3" }} // Aplica a cor ou uma cor padrão
                       >
-                        {Icon ? <Icon color="white" size={24} /> : null}
+                        {Icon ? <Icon color="white" size={24} /> : <DefaultIcon color="white" size={24} />}
                       </View>
+                      {/* Nome da categoria */}
                       <View className="absolute bottom-4 items-center">
                         <Text className="text-center font-inter">{category.nome}</Text>
                       </View>
