@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, ActivityIndicator } from "react-native";
+import { View, Text, ActivityIndicator } from "react-native";
 import * as LucideIcons from "lucide-react-native";
+import { Link } from "expo-router";
 
 type Category = {
   id: string;
   nome: string;
-  cor: string; // Adicionado o campo 'cor'
+  cor: string;
   icone_id: keyof typeof LucideIcons;
 };
 
@@ -86,7 +87,14 @@ export default function Section() {
                 const DefaultIcon = LucideIcons["AlertCircle"]; // Ícone padrão
 
                 return (
-                  <TouchableOpacity key={category.id} className="mb-4 w-[30%]">
+                  <Link
+                    key={category.id}
+                    href={{
+                      pathname: "pages/trainings/[categoryId]",
+                      params: { categoryId: category.id, categoryName: category.nome },
+                    }}
+                    className="mb-4 w-[30%]"
+                  >
                     <View className="relative h-[118px] items-center justify-center rounded-md border border-black bg-white">
                       {/* Círculo com cor dinâmica */}
                       <View
@@ -100,7 +108,7 @@ export default function Section() {
                         <Text className="text-center font-inter">{category.nome}</Text>
                       </View>
                     </View>
-                  </TouchableOpacity>
+                  </Link>
                 );
               })
             ) : (
