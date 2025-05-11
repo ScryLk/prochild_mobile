@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ActivityIndicator, FlatList, TouchableOpacity, Linking, Alert } from "react-native";
-import { useLocalSearchParams } from "expo-router";
+import { View, Text, ActivityIndicator, FlatList, TouchableOpacity } from "react-native";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import Header from "../../../components/headerButtons/Header/header"; // Ajuste o caminho conforme necessário
-import { FileText, Video, Image as ImageIcon } from "lucide-react-native"; // Ícones para os tipos de arquivo
-import { Menu } from "lucide-react-native";
+import { FileText, Video, Image as ImageIcon, Menu } from "lucide-react-native"; // Ícones para os tipos de arquivo
+import routes from "~/routes/routes";
 
 type Training = {
   id: string;
@@ -17,6 +17,7 @@ export default function Trainings() {
   const { categoryId, categoryName } = useLocalSearchParams(); // Obtém os parâmetros da URL
   const [trainings, setTrainings] = useState<Training[]>([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter(); // Hook para navegação
 
   useEffect(() => {
     const fetchTrainings = async () => {
@@ -58,23 +59,6 @@ export default function Trainings() {
     }
   };
 
-  const handleMenuPress = (training: Training) => {
-    Alert.alert(
-      "Ação",
-      `O que você gostaria de fazer com o treinamento "${training.titulo}"?`,
-      [
-        {
-          text: "Abrir",
-          onPress: () => Linking.openURL(training.arquivo_caminho),
-        },
-        {
-          text: "Cancelar",
-          style: "cancel",
-        },
-      ]
-    );
-  };
-
   if (loading) {
     return (
       <View className="flex-1 items-center justify-center">
@@ -110,8 +94,15 @@ export default function Trainings() {
                   <Text className="text-[14px] text-gray-600">{item.descricao}</Text>
                 </View>
 
-                {/* Botão de menu */}
-                <TouchableOpacity onPress={() => handleMenuPress(item)}>
+                {/* Botão de menu como link */}
+                <TouchableOpacity
+                  onPress={() =>
+                    router.push({
+                      pathname: routes.TrainingDetails, // Redireciona para a rota de detalhes do treinamento
+                      params: { trainingId: item.id }, // Passa o ID do treinamento como parâmetro
+                    })
+                  }
+                >
                   <Menu />
                 </TouchableOpacity>
               </View>

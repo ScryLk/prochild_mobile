@@ -4,7 +4,8 @@ const routes = {
   login: "/auth/login/login",
   forgotPassword: "auth/forgot-password/forgot-password",
   homePage: "/(tabs)/inicio",
-  trainings: "/trainings/[categoryId]", // Rota dinâmica para treinamentos
+  trainings: "/trainings/[categoryId]",
+  TrainingDetails: "/pages/trainings/trainingsDetails/trainingsDetails"
 };
 
 export default routes;
