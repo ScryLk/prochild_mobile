@@ -93,20 +93,23 @@ export default function Section() {
                       pathname: "pages/trainings/[categoryId]",
                       params: { categoryId: category.id, categoryName: category.nome },
                     }}
-                    className="mb-4 w-[30%]"
+                    className="mb-4"
                   >
-                    <View className="relative h-[118px] items-center justify-center rounded-md border border-black bg-white">
+                    <View className="relative h-[140px] w-[100px] items-center justify-center rounded-md border border-gray-300 bg-white shadow-md">
                       {/* Círculo com cor dinâmica */}
                       <View
-                        className="absolute top-4 h-[52px] w-[52px] items-center justify-center rounded-full"
+                        className="h-[60px] w-[60px] items-center justify-center rounded-full"
                         style={{ backgroundColor: category.cor || "#D3D3D3" }} // Aplica a cor ou uma cor padrão
                       >
-                        {Icon ? <Icon color="white" size={24} /> : <DefaultIcon color="white" size={24} />}
+                        {Icon ? <Icon color="white" size={28} /> : <DefaultIcon color="white" size={28} />}
                       </View>
                       {/* Nome da categoria */}
-                      <View className="absolute bottom-4 items-center">
-                        <Text className="text-center font-inter">{category.nome}</Text>
-                      </View>
+                      <Text
+                        className="mt-3 text-center font-inter text-[14px] font-medium text-gray-800"
+                        numberOfLines={2} // Permite até 2 linhas
+                      >
+                        {category.nome}
+                      </Text>
                     </View>
                   </Link>
                 );

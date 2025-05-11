@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
-import * as LucideIcons from 'lucide-react-native'; // Importa todos os ícones do Lucide
+import * as LucideIcons from 'lucide-react-native';
 
 type Category = {
   id: string;
   nome: string;
   cor: string;
-  icone_id: keyof typeof LucideIcons; // Garante que icone_id seja uma chave válida
+  icone_id: keyof typeof LucideIcons;
 };
 
 export default function Categories() {
-  const [categories, setCategories] = useState<Category[]>([]); // Inicializa como array vazio
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -20,7 +20,7 @@ export default function Categories() {
         const data = await response.json();
 
         if (data.success && Array.isArray(data.success)) {
-          setCategories(data.success); 
+          setCategories(data.success);
         } else {
           console.error('Os dados retornados não são um array:', data);
         }
@@ -51,11 +51,10 @@ export default function Categories() {
       <View className="flex flex-row flex-wrap justify-between">
         {Array.isArray(categories) &&
           categories.map((category) => {
-            // Verifica se o ícone existe, caso contrário, usa um ícone padrão
             const Icon = LucideIcons[category.icone_id] as React.ComponentType | undefined;
-            const DefaultIcon = LucideIcons["AlertCircle"]; // Ícone padrão
+            const DefaultIcon = LucideIcons['AlertCircle'];
 
-            console.log("Ícone ID:", category.icone_id); // Log para verificar o ícone
+            console.log('Ícone ID:', category.icone_id);
 
             return (
               <TouchableOpacity
@@ -66,9 +65,8 @@ export default function Categories() {
                 <View className="relative h-[118px] items-center justify-center rounded-md border border-black bg-white">
                   <View
                     className="absolute top-4 h-[52px] w-[52px] items-center justify-center rounded-full"
-                    style={{ backgroundColor: category.cor }}
-                  >
-                    {Icon ? <Icon  /> : <DefaultIcon color="white" size={24} />}
+                    style={{ backgroundColor: category.cor }}>
+                    {Icon ? <Icon /> : <DefaultIcon color="white" size={24} />}
                   </View>
                   <View className="absolute bottom-4 items-center">
                     <Text className="text-center font-inter">{category.nome}</Text>
