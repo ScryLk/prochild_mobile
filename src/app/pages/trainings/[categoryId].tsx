@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ActivityIndicator, FlatList, TouchableOpacity, Linking } from "react-native";
+import { View, Text, ActivityIndicator, FlatList, TouchableOpacity, Linking, Alert } from "react-native";
 import { useLocalSearchParams } from "expo-router";
+import Header from "../../../components/headerButtons/Header/header"; // Ajuste o caminho conforme necessário
+import { FileText, Video, Image as ImageIcon } from "lucide-react-native"; // Ícones para os tipos de arquivo
+import { Menu } from "lucide-react-native";
 
 type Training = {
   id: string;
@@ -36,6 +39,42 @@ export default function Trainings() {
     fetchTrainings();
   }, [categoryId]);
 
+  const getIconForFileType = (fileName: string) => {
+    const fileExtension = fileName.split(".").pop()?.toLowerCase();
+    switch (fileExtension) {
+      case "pdf":
+        return <FileText color="#000" size={24} />;
+      case "mp4":
+      case "mov":
+      case "avi":
+        return <Video color="#000" size={24} />;
+      case "jpg":
+      case "jpeg":
+      case "png":
+      case "gif":
+        return <ImageIcon color="#000" size={24} />;
+      default:
+        return <FileText color="#000" size={24} />;
+    }
+  };
+
+  const handleMenuPress = (training: Training) => {
+    Alert.alert(
+      "Ação",
+      `O que você gostaria de fazer com o treinamento "${training.titulo}"?`,
+      [
+        {
+          text: "Abrir",
+          onPress: () => Linking.openURL(training.arquivo_caminho),
+        },
+        {
+          text: "Cancelar",
+          style: "cancel",
+        },
+      ]
+    );
+  };
+
   if (loading) {
     return (
       <View className="flex-1 items-center justify-center">
@@ -45,25 +84,43 @@ export default function Trainings() {
   }
 
   return (
-    <View className="p-4">
-      <Text className="text-[22px] font-bold mb-4">Treinamentos de {categoryName}</Text>
-      {trainings.length > 0 ? (
-        <FlatList
-          data={trainings}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <View className="mb-4 p-4 border border-gray-300 rounded-md">
-              <Text className="text-[18px] font-bold">{item.titulo}</Text>
-              <Text className="text-[16px] text-gray-600">{item.descricao}</Text>
-              <TouchableOpacity onPress={() => Linking.openURL(item.arquivo_caminho)}>
-                <Text className="text-[14px] text-blue-500 underline">{item.arquivo_nome}</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-        />
-      ) : (
-        <Text className="text-[16px] text-gray-500">Nenhum treinamento encontrado.</Text>
-      )}
+    <View className="flex-1">
+      {/* Header */}
+      <Header
+        title={`${categoryName}`}
+        showFilter={true}
+        onFilterPress={() => console.log("Filtro pressionado")}
+        showBackButton={true}
+      />
+
+      {/* Conteúdo */}
+      <View className="p-4">
+        {trainings.length > 0 ? (
+          <FlatList
+            data={trainings}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <View className="flex-row items-center mb-4 p-4 border border-gray-300 rounded-md">
+                {/* Ícone do tipo de arquivo */}
+                <View className="mr-4">{getIconForFileType(item.arquivo_nome)}</View>
+
+                {/* Informações do treinamento */}
+                <View className="flex-1">
+                  <Text className="text-[18px] font-bold">{item.titulo}</Text>
+                  <Text className="text-[14px] text-gray-600">{item.descricao}</Text>
+                </View>
+
+                {/* Botão de menu */}
+                <TouchableOpacity onPress={() => handleMenuPress(item)}>
+                  <Menu />
+                </TouchableOpacity>
+              </View>
+            )}
+          />
+        ) : (
+          <Text className="text-[16px] text-gray-500">Nenhum treinamento encontrado.</Text>
+        )}
+      </View>
     </View>
   );
 }
