@@ -23,7 +23,7 @@ export default function FeaturesSection() {
             </Text>
           </TouchableOpacity>
         </Link>
-        <Link href="/emergency-call" asChild>
+        <Link href={routes.EmergencyCalls} asChild>
           <TouchableOpacity
             className="mb-4 h-[140px] w-[100px] items-center justify-center rounded-md border border-gray-300 bg-white shadow-md"
           >
@@ -37,7 +37,7 @@ export default function FeaturesSection() {
             </Text>
           </TouchableOpacity>
         </Link>
-        <Link href="/settings" asChild>
+        <Link href={routes.Settings} asChild>
           <TouchableOpacity
             className="mb-4 h-[140px] w-[100px] items-center justify-center rounded-md border border-gray-300 bg-white shadow-md"
           >

@@ -6,7 +6,9 @@ const routes = {
   homePage: "/(tabs)/inicio",
   trainings: "/trainings/[categoryId]",
   TrainingDetails: "/pages/trainings/trainingsDetails/trainingsDetails",
-  HealthCenter: "/pages/health-center/health-center"
+  HealthCenter: "/pages/health-center/health-center",
+  EmergencyCalls: "/pages/emergency-calls/emergency-calls",
+  Settings: "/pages/settings/settings"
 };
 
 export default routes;

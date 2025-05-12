@@ -1,11 +1,11 @@
-import { Text, View } from 'react-native';
+import { View, Text } from 'react-native';
 import Header from '~/components/headerButtons/Header/header';
 
-export default function HealthCenter() {
+export default function Settings() {
   return (
     <View>
       <Header
-        title={"Centros de Saúde"}
+        title={'Ajustes'}
         showFilter={false}
         onFilterPress={() => console.log('Filtro pressionado')}
         showBackButton={true}
