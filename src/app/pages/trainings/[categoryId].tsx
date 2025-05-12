@@ -91,7 +91,13 @@ export default function Trainings() {
                 {/* Informações do treinamento */}
                 <View className="flex-1">
                   <Text className="text-[18px] font-bold">{item.titulo}</Text>
-                  <Text className="text-[14px] text-gray-600">{item.descricao}</Text>
+                  <Text
+                    className="text-[14px] text-gray-600"
+                    numberOfLines={3} // Limita a descrição a 3 linhas
+                    ellipsizeMode="tail" // Adiciona reticências no final, se necessário
+                  >
+                    {item.descricao}
+                  </Text>
                 </View>
 
                 {/* Botão de menu como link */}
