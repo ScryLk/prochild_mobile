@@ -5,7 +5,8 @@ const routes = {
   forgotPassword: "auth/forgot-password/forgot-password",
   homePage: "/(tabs)/inicio",
   trainings: "/trainings/[categoryId]",
-  TrainingDetails: "/pages/trainings/trainingsDetails/trainingsDetails"
+  TrainingDetails: "/pages/trainings/trainingsDetails/trainingsDetails",
+  HealthCenter: "/pages/health-center/health-center"
 };
 
 export default routes;

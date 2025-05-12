@@ -77,15 +77,12 @@ export default function Section() {
     <View className="p-4">
       {sections.map((section) => (
         <View key={section.id} className="mb-6">
-          {/* Nome da seção */}
           <Text className="text-[22px] font-bold font-inter mb-4">{section.nome}</Text>
-          {/* Renderiza apenas os cards */}
           <View className="flex flex-row flex-wrap justify-between mt-4">
             {categoriesBySection[section.id] && categoriesBySection[section.id].length > 0 ? (
               categoriesBySection[section.id].map((category) => {
                 const Icon = LucideIcons[category.icone_id] as React.ComponentType | undefined;
-                const DefaultIcon = LucideIcons["AlertCircle"]; // Ícone padrão
-
+                const DefaultIcon = LucideIcons["AlertCircle"]; 
                 return (
                   <Link
                     key={category.id}
@@ -96,17 +93,15 @@ export default function Section() {
                     className="mb-4"
                   >
                     <View className="relative h-[140px] w-[100px] items-center justify-center rounded-md border border-gray-300 bg-white shadow-md">
-                      {/* Círculo com cor dinâmica */}
                       <View
                         className="h-[60px] w-[60px] items-center justify-center rounded-full"
-                        style={{ backgroundColor: category.cor || "#D3D3D3" }} // Aplica a cor ou uma cor padrão
+                        style={{ backgroundColor: category.cor || "#D3D3D3" }}
                       >
                         {Icon ? <Icon color="white" size={28} /> : <DefaultIcon color="white" size={28} />}
                       </View>
-                      {/* Nome da categoria */}
                       <Text
                         className="mt-3 text-center font-inter text-[14px] font-medium text-gray-800"
-                        numberOfLines={2} // Permite até 2 linhas
+                        numberOfLines={2} 
                       >
                         {category.nome}
                       </Text>
