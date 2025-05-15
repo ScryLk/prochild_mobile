@@ -21,48 +21,53 @@ export default function Search() {
   const router = useRouter();
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async (categoryId: string) => {
       setLoading(true);
       try {
         const requestOptions = {
           method: "GET",
           redirect: "follow",
         };
-
-        const response = await fetch("http://127.0.0.1:8000/trainings/trainings/categorie/15", requestOptions);
+  
+        const response = await fetch(`http://127.0.0.1:8000/trainings/trainings/categorie/${categoryId}`, requestOptions);
         const data = await response.json();
-
+  
         console.log("Dados recebidos da API:", data); // Para depuração
-
-        // Reorganiza os dados para agrupar treinamentos por categoria
-        const groupedCategories = data.success.reduce((acc: any, training: any) => {
-          const categoryName = training.categoria_nome;
-
-          // Verifica se a categoria já existe no acumulador
-          const existingCategory = acc.find((cat: any) => cat.nome === categoryName);
-
-          if (existingCategory) {
-            // Adiciona o treinamento à categoria existente
-            existingCategory.treinamentos.push(training);
-          } else {
-            // Cria uma nova categoria com o treinamento
-            acc.push({
-              nome: categoryName,
-              treinamentos: [training],
-            });
-          }
-
-          return acc;
-        }, []);
-
-        setCategories(groupedCategories);
+  
+        // Verifica se data.success existe e é um array
+        if (data.success && Array.isArray(data.success)) {
+          const groupedCategories = data.success.reduce((acc: any, training: any) => {
+            const categoryName = training.categoria_nome;
+  
+            // Verifica se a categoria já existe no acumulador
+            const existingCategory = acc.find((cat: any) => cat.nome === categoryName);
+  
+            if (existingCategory) {
+              // Adiciona o treinamento à categoria existente
+              existingCategory.treinamentos.push(training);
+            } else {
+              // Cria uma nova categoria com o treinamento
+              acc.push({
+                nome: categoryName,
+                treinamentos: [training],
+              });
+            }
+  
+            return acc;
+          }, []);
+  
+          setCategories(groupedCategories);
+        } else {
+          console.error("Erro: data.success não é um array ou está ausente.", data);
+          setCategories([]); 
+        }
       } catch (error) {
         console.error("Erro ao buscar dados:", error);
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchData();
   }, []);
 
