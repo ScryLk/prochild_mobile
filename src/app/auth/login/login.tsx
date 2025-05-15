@@ -13,12 +13,16 @@ import GoogleIcon from '../../../assets/svg/google.svg';
 import GovIcon from '../../../assets/svg/govbr.png';
 import routes from '~/routes/routes';
 import { Link } from 'expo-router';
+import { useRouter } from 'expo-router'; // Importa o useRouter
+
 
 export default function Login() {
   const [email, setEmail] = useState(''); // Estado para o e-mail
   const [password, setPassword] = useState(''); // Estado para a senha
   const [loading, setLoading] = useState(false); // Estado para carregamento
   const [showPassword, setShowPassword] = useState(false); // Estado para visibilidade da senha
+
+  const router = useRouter(); // Inicializa o roteador
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -55,6 +59,7 @@ export default function Login() {
       if (response.ok) {
         console.log('Login bem-sucedido:', result);
         Alert.alert('Sucesso', 'Login realizado com sucesso!');
+        router.push(routes.homePage); // Redireciona para a rota home
       } else {
         console.error('Erro no login:', result);
         Alert.alert('Erro', result.message || 'Falha ao realizar login.');
