@@ -9,6 +9,7 @@ export default function HealthCenter() {
         showFilter={false}
         onFilterPress={() => console.log('Filtro pressionado')}
         showBackButton={true}
+        showPlusButton={true}
       />
     </View>
   );
