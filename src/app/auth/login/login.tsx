@@ -14,7 +14,7 @@ import GovIcon from '../../../assets/svg/govbr.png';
 import routes from '~/routes/routes';
 import { Link } from 'expo-router';
 import { useRouter } from 'expo-router'; // Importa o useRouter
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Login() {
   const [email, setEmail] = useState(''); // Estado para o e-mail
@@ -29,36 +29,45 @@ export default function Login() {
       Alert.alert('Erro', 'Por favor, preencha todos os campos.');
       return;
     }
-  
+
     setLoading(true);
-  
+
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
     myHeaders.append('Accept', 'application/json');
-  
+
     const raw = JSON.stringify({
       email: email,
       password: password, // Certifique-se de usar o campo correto
     });
-  
-    console.log("Dados enviados:", raw); // Verifique os dados enviados
-  
+
+    console.log('Dados enviados:', raw); // Verifique os dados enviados
+
     const requestOptions = {
       method: 'POST',
       headers: myHeaders,
       body: raw,
       redirect: 'follow',
     };
-  
+
     try {
       const response = await fetch('http://127.0.0.1:8000/users/login/', requestOptions);
       const result = await response.json();
-  
-      console.log("Resposta do servidor:", result); // Verifique a resposta do servidor
-  
+
+      console.log('Resposta do servidor:', result); // Verifique a resposta do servidor
+
       if (response.ok) {
         console.log('Login bem-sucedido:', result);
         Alert.alert('Sucesso', 'Login realizado com sucesso!');
+
+        // Salva o token e/ou user_id no AsyncStorage
+        if (result.token) {
+          await AsyncStorage.setItem('token', result.token);
+        }
+        if (result.id) {
+          await AsyncStorage.setItem('user_id', String(result.id));
+        }
+
         router.push(routes.homePage); // Redireciona para a rota home
       } else {
         console.error('Erro no login:', result);
