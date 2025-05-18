@@ -96,7 +96,12 @@ export default function HealthCenter() {
             renderItem={({ item }) => (
               <TouchableOpacity
                 className="flex-row items-center justify-between  border-gray-200 p-4"
-                onPress={() => router.push(`${routes.healthCenterDetails}/${item.id}`)}>
+                onPress={() =>
+                  router.push({
+                    pathname: routes.healthCenterDetails,
+                    params: { id: item.id },
+                  })
+                }>
                 <View>
                   <Text className="text-lg font-bold">{item.nome}</Text>
                   <Text className="text-gray-600">{item.descricao}</Text>
