@@ -19,7 +19,6 @@ export default function HealthCenter() {
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState<number | null>(null);
 
-
   useEffect(() => {
     const getUserIdAndFetch = async () => {
       try {
@@ -75,7 +74,6 @@ export default function HealthCenter() {
 
   const router = useRouter();
 
-
   return (
     <View className="flex-1 bg-white">
       <Header
@@ -90,28 +88,28 @@ export default function HealthCenter() {
           <ActivityIndicator size="large" color="#3461FD" />
         </View>
       ) : (
-        <FlatList
-          data={healthCenters}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              className="flex-row items-center justify-between border-b border-gray-200 p-4"
-              onPress={() =>
-                router.push(`${routes.HealthCenterDetails}/${item.id}`)
-              }>
-              <View>
-                <Text className="text-lg font-bold">{item.nome}</Text>
-                <Text className="text-gray-600">{item.descricao}</Text>
+        <View>
+          <FlatList
+            data={healthCenters}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                className="flex-row items-center justify-between  border-gray-200 p-4"
+                onPress={() => router.push(`${routes.healthCenterDetails}/${item.id}`)}>
+                <View>
+                  <Text className="text-lg font-bold">{item.nome}</Text>
+                  <Text className="text-gray-600">{item.descricao}</Text>
+                </View>
+                <ChevronRight color="#000" size={24} />
+              </TouchableOpacity>
+            )}
+            ListEmptyComponent={
+              <View className="flex-1 items-center justify-center">
+                <Text className="text-gray-500">Nenhum centro de saúde encontrado.</Text>
               </View>
-              <ChevronRight color="#000" size={24} />
-            </TouchableOpacity>
-          )}
-          ListEmptyComponent={
-            <View className="flex-1 items-center justify-center">
-              <Text className="text-gray-500">Nenhum centro de saúde encontrado.</Text>
-            </View>
-          }
-        />
+            }
+          />
+        </View>
       )}
     </View>
   );
