@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, ActivityIndicator, Alert } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import Header from '~/components/headerButtons/Header/header';
 import { Phone, Info, Calendar } from 'lucide-react-native';
+import { FAB } from 'react-native-paper';
 
 export default function HealthCenterDetails() {
   const { id } = useLocalSearchParams();
+  const router = useRouter();
   const [healthCenter, setHealthCenter] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -32,6 +35,46 @@ export default function HealthCenterDetails() {
 
     if (id) fetchDetails();
   }, [id]);
+
+  const handleEdit = () => {
+    setOpen(false);
+    router.push(`/pages/health-centers/health-center-details/${id}/edit`);
+  };
+
+  const handleDelete = async () => {
+    setOpen(false);
+    Alert.alert(
+      'Excluir',
+      'Tem certeza que deseja excluir este centro de saúde?',
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        {
+          text: 'Excluir',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              const myHeaders = new Headers();
+              myHeaders.append('Cookie', 'csrftoken=kIXQNyPmD8kZSIkPOTj6mWZdE2GhtKnu');
+              const requestOptions = {
+                method: 'DELETE',
+                headers: myHeaders,
+                redirect: 'follow',
+              };
+              const response = await fetch(`http://127.0.0.1:8000/healthcenters/${id}`, requestOptions);
+              if (response.ok) {
+                Alert.alert('Sucesso', 'Centro de saúde excluído!');
+                router.back();
+              } else {
+                Alert.alert('Erro', 'Não foi possível excluir.');
+              }
+            } catch (error) {
+              Alert.alert('Erro', 'Erro ao excluir.');
+            }
+          },
+        },
+      ]
+    );
+  };
 
   if (loading) {
     return (
@@ -87,6 +130,33 @@ export default function HealthCenterDetails() {
           </Text>
         </View>
       </View>
+
+      {/* Speed Dial */}
+      <FAB.Group
+        open={open}
+        visible
+        icon={open ? 'close' : 'pen'}
+        actions={[
+          {
+            icon: 'pencil',
+            label: 'Editar',
+            onPress: handleEdit,
+            color: '#3461FD',
+            style: { backgroundColor: '#e0e7ff' },
+          },
+          {
+            icon: 'trash-can',
+            label: 'Excluir',
+            onPress: handleDelete,
+            color: '#dc2626',
+            style: { backgroundColor: '#fee2e2' },
+          },
+        ]}
+        onStateChange={({ open }) => setOpen(open)}
+        onPress={() => {
+          if (open) setOpen(false);
+        }}
+      />
     </View>
   );
 }
