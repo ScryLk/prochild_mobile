@@ -60,7 +60,7 @@ export default function HealthCenterDetails() {
                 headers: myHeaders,
                 redirect: 'follow',
               };
-              const response = await fetch(`http://127.0.0.1:8000/healthcenters/${id}`, requestOptions);
+              const response = await fetch(`http://127.0.0.1:8000/healthcenters/delete/${id}`, requestOptions);
               if (response.ok) {
                 Alert.alert('Sucesso', 'Centro de saúde excluído!');
                 router.back();
