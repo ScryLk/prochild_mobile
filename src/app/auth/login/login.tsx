@@ -98,32 +98,37 @@ export default function Login() {
         <Text className="mx-4 text-gray-500">Ou</Text>
         <View className="h-[1px] flex-1 bg-gray-300" />
       </View>
-
-      <TextInput
-        placeholder="Digite seu e-mail"
-        className="mb-4 rounded-lg bg-inputColor px-4 py-4 text-black"
-        keyboardType="email-address"
-        value={email}
-        onChangeText={setEmail}
-        autoCapitalize="none"
-      />
-
-      <View className="mb-4 flex-row items-center rounded-lg bg-inputColor px-4 py-4">
+      <View>
+        <View className="mb-2">
+          <Text>E-mail</Text>
+        </View>
         <TextInput
-          placeholder="Digite sua senha"
-          secureTextEntry={!showPassword} // Alterna entre mostrar e ocultar a senha
-          className="flex-1 text-black"
-          value={password}
-          onChangeText={setPassword}
+          placeholder="Digite seu e-mail"
+          className="mb-4 rounded-lg bg-inputColor px-4 py-4 text-black"
+          keyboardType="email-address"
+          value={email}
+          onChangeText={setEmail}
           autoCapitalize="none"
         />
-        <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-          {showPassword ? (
-            <EyeOff color="gray" size={24} /> // Ícone para ocultar a senha
-          ) : (
-            <Eye color="gray" size={24} /> // Ícone para mostrar a senha
-          )}
-        </TouchableOpacity>
+      </View>
+
+      <View>
+        <View className="mb-2">
+          <Text>Senha</Text>
+        </View>
+        <View className="mb-4 flex-row items-center rounded-lg bg-inputColor px-4 py-4">
+          <TextInput
+            placeholder="Digite sua senha"
+            secureTextEntry={!showPassword}
+            className="flex-1 text-black"
+            value={password}
+            onChangeText={setPassword}
+            autoCapitalize="none"
+          />
+          <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+            {showPassword ? <EyeOff color="gray" size={24} /> : <Eye color="gray" size={24} />}
+          </TouchableOpacity>
+        </View>
       </View>
 
       <TouchableOpacity className="mb-6">
