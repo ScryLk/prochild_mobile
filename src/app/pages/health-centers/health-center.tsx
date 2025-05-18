@@ -81,6 +81,7 @@ export default function HealthCenter() {
         showFilter={false}
         showBackButton={true}
         showPlusButton={true}
+        plusButtonRoute={routes.AddHealthCenter} // exemplo de rota dinâmica
       />
 
       {loading ? (

@@ -8,6 +8,7 @@ const routes = {
   TrainingDetails: "/pages/trainings/trainingsDetails/trainingsDetails",
   HealthCenter: "/pages/health-centers/health-center",
   healthCenterDetails: "/pages/health-centers/health-center-details/",
+  AddHealthCenter: "/pages/health-centers/add-health-centers/add-health-centers",
   EmergencyCalls: "/pages/emergency-calls/emergency-calls",
   Settings: "/pages/settings/settings"
 };
