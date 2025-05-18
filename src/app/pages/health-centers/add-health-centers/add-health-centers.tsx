@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Header from '~/components/headerButtons/Header/header';
 
@@ -8,6 +8,7 @@ export default function AddHealthCenters() {
   const [telefone, setTelefone] = useState('');
   const [descricao, setDescricao] = useState('');
   const [userId, setUserId] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getUserId = async () => {
@@ -18,10 +19,12 @@ export default function AddHealthCenters() {
   }, []);
 
   const handleSubmit = async () => {
+    if (loading) return;
     if (!nome || !telefone || !descricao || !userId) {
       Alert.alert('Erro', 'Preencha todos os campos');
       return;
     }
+    setLoading(true);
 
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
@@ -54,45 +57,61 @@ export default function AddHealthCenters() {
       }
     } catch (error) {
       Alert.alert('Erro', 'Não foi possível conectar ao servidor.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <View className="flex-1">
+    <View className="flex-1 bg-white">
       <Header
         title="Adicionar Centro de Saúde"
         showBackButton
         showPlusButton={false}
         showFilter={false}
       />
-      <View className="flex-1 bg-white p-4">
-        <Text className="mt-2 text-base">Nome</Text>
-        <TextInput
-          className="rounded border border-gray-300 px-2 py-1"
-          value={nome}
-          onChangeText={setNome}
-        />
+      <ScrollView contentContainerStyle={{ padding: 20, flexGrow: 1 }}>
+        <View className="bg-gray-100 rounded-2xl p-4 mb-4 shadow-sm">
+          <Text className="text-base font-semibold mb-2">Nome do Centro</Text>
+          <TextInput
+            className="bg-white rounded-lg border border-gray-300 px-3 py-2 mb-2"
+            placeholder="Digite o nome"
+            value={nome}
+            onChangeText={setNome}
+          />
 
-        <Text className="mt-2 text-base">Telefone</Text>
-        <TextInput
-          className="rounded border border-gray-300 px-2 py-1"
-          value={telefone}
-          onChangeText={setTelefone}
-        />
+          <Text className="text-base font-semibold mb-2">Telefone</Text>
+          <TextInput
+            className="bg-white rounded-lg border border-gray-300 px-3 py-2 mb-2"
+            placeholder="Digite o telefone"
+            value={telefone}
+            onChangeText={setTelefone}
+            keyboardType="phone-pad"
+          />
 
-        <Text className="mt-2 text-base">Descrição</Text>
-        <TextInput
-          className="rounded border border-gray-300 px-2 py-1"
-          value={descricao}
-          onChangeText={setDescricao}
-        />
+          <Text className="text-base font-semibold mb-2">Descrição</Text>
+          <TextInput
+            className="bg-white rounded-lg border border-gray-300 px-3 py-2 mb-2"
+            placeholder="Digite uma descrição"
+            value={descricao}
+            onChangeText={setDescricao}
+            multiline
+            numberOfLines={4}
+            style={{ minHeight: 80, textAlignVertical: 'top' }}
+          />
+        </View>
 
         <TouchableOpacity
           onPress={handleSubmit}
-          className="mt-4 items-center rounded bg-blue-500 py-3">
-          <Text className="text-base font-semibold text-white">Cadastrar</Text>
+          className="mt-4 items-center rounded-lg bg-blue-600 py-4"
+          disabled={loading}
+          style={loading ? { opacity: 0.6 } : {}}
+        >
+          <Text className="text-base font-semibold text-white">
+            {loading ? 'Cadastrando...' : 'Cadastrar Centro de Saúde'}
+          </Text>
         </TouchableOpacity>
-      </View>
+      </ScrollView>
     </View>
   );
 }
