@@ -6,7 +6,7 @@ import {
   Alert,
   FlatList,
   TouchableOpacity,
-  Image,
+  Linking,
 } from 'react-native';
 import Header from '~/components/headerButtons/Header/header';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -18,6 +18,7 @@ type HealthCenter = {
   nome: string;
   endereco: string;
   descricao: string;
+  telefone: string;
 };
 
 export default function EmergencyCalls() {
@@ -134,9 +135,14 @@ export default function EmergencyCalls() {
           <View className="mt-8 items-center">
             <TouchableOpacity
               className={`rounded-3xl px-8 py-3 ${selectedId ? 'bg-red-600' : 'bg-gray-300'}`}
-              onPress={() =>
-                Alert.alert('Emergência', 'Chamando emergência para o centro selecionado!')
-              }
+              onPress={() => {
+                const selected = healthCenters.find((hc) => String(hc.id) === selectedId);
+                if (selected?.telefone) {
+                  Linking.openURL(`tel:${selected.telefone}`);
+                } else {
+                  Alert.alert('Erro', 'Telefone não encontrado para este centro de saúde.');
+                }
+              }}
               disabled={!selectedId}
               activeOpacity={selectedId ? 0.7 : 1}>
               <Text
