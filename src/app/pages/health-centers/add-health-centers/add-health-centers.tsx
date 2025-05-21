@@ -37,7 +37,7 @@ export default function AddHealthCenters() {
       usuario_id: userId,
     });
 
-    const requestOptions = {
+    const requestOptions: RequestInit = {
       method: 'POST',
       headers: myHeaders,
       body: raw,
@@ -45,7 +45,10 @@ export default function AddHealthCenters() {
     };
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/healthcenters/', requestOptions);
+      const response = await fetch(
+        'https://prochild-back-proud-star-4651.fly.dev/healthcenters/',
+        requestOptions
+      );
       const result = await response.text();
       if (response.ok) {
         Alert.alert('Sucesso', 'Centro de saúde criado!');
@@ -71,27 +74,27 @@ export default function AddHealthCenters() {
         showFilter={false}
       />
       <ScrollView contentContainerStyle={{ padding: 20, flexGrow: 1 }}>
-        <View className="bg-gray-100 rounded-2xl p-4 mb-4 shadow-sm">
-          <Text className="text-base font-semibold mb-2">Nome do Centro</Text>
+        <View className="mb-4 rounded-2xl bg-gray-100 p-4 shadow-sm">
+          <Text className="mb-2 text-base font-semibold">Nome do Centro</Text>
           <TextInput
-            className="bg-white rounded-lg border border-gray-300 px-3 py-2 mb-2"
+            className="mb-2 rounded-lg border border-gray-300 bg-white px-3 py-2"
             placeholder="Digite o nome"
             value={nome}
             onChangeText={setNome}
           />
 
-          <Text className="text-base font-semibold mb-2">Telefone</Text>
+          <Text className="mb-2 text-base font-semibold">Telefone</Text>
           <TextInput
-            className="bg-white rounded-lg border border-gray-300 px-3 py-2 mb-2"
+            className="mb-2 rounded-lg border border-gray-300 bg-white px-3 py-2"
             placeholder="Digite o telefone"
             value={telefone}
             onChangeText={setTelefone}
             keyboardType="phone-pad"
           />
 
-          <Text className="text-base font-semibold mb-2">Descrição</Text>
+          <Text className="mb-2 text-base font-semibold">Descrição</Text>
           <TextInput
-            className="bg-white rounded-lg border border-gray-300 px-3 py-2 mb-2"
+            className="mb-2 rounded-lg border border-gray-300 bg-white px-3 py-2"
             placeholder="Digite uma descrição"
             value={descricao}
             onChangeText={setDescricao}
@@ -105,8 +108,7 @@ export default function AddHealthCenters() {
           onPress={handleSubmit}
           className="mt-4 items-center rounded-lg bg-blue-600 py-4"
           disabled={loading}
-          style={loading ? { opacity: 0.6 } : {}}
-        >
+          style={loading ? { opacity: 0.6 } : {}}>
           <Text className="text-base font-semibold text-white">
             {loading ? 'Cadastrando...' : 'Cadastrar Centro de Saúde'}
           </Text>

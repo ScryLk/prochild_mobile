@@ -4,7 +4,7 @@
     "slug": "prochild",
     "version": "1.0.0",
     "initialRoute": {
-      "name": "/"
+      "name": "/login"
     },
     "web": {
       "favicon": "./assets/favicon.png"

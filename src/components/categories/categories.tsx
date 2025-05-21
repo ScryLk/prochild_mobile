@@ -16,7 +16,7 @@ export default function Categories() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/categories/categories/');
+        const response = await fetch('https://prochild-back-proud-star-4651.fly.dev/categories/categories/');
         const data = await response.json();
 
         if (data.success && Array.isArray(data.success)) {

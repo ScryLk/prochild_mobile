@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -8,21 +8,31 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native';
-import { Eye, EyeOff } from 'lucide-react-native'; // Adicione o ícone EyeOff para alternar
+import { Eye, EyeOff } from 'lucide-react-native'; 
 import GoogleIcon from '../../../assets/svg/google.svg';
 import GovIcon from '../../../assets/svg/govbr.png';
 import routes from '~/routes/routes';
 import { Link } from 'expo-router';
-import { useRouter } from 'expo-router'; // Importa o useRouter
+import { useRouter } from 'expo-router'; 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Login() {
-  const [email, setEmail] = useState(''); // Estado para o e-mail
-  const [password, setPassword] = useState(''); // Estado para a senha
-  const [loading, setLoading] = useState(false); // Estado para carregamento
-  const [showPassword, setShowPassword] = useState(false); // Estado para visibilidade da senha
+  const [email, setEmail] = useState(''); 
+  const [password, setPassword] = useState(''); 
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); 
 
-  const router = useRouter(); // Inicializa o roteador
+  const router = useRouter(); 
+
+  useEffect(() => {
+    const checkLogged = async () => {
+      const token = await AsyncStorage.getItem('token');
+      if (token) {
+        router.replace(routes.homePage);
+      }
+    };
+    checkLogged();
+  }, []);
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -38,12 +48,12 @@ export default function Login() {
 
     const raw = JSON.stringify({
       email: email,
-      password: password, // Certifique-se de usar o campo correto
+      password: password, 
     });
 
-    console.log('Dados enviados:', raw); // Verifique os dados enviados
+    console.log('Dados enviados:', raw); 
 
-    const requestOptions = {
+    const requestOptions : RequestInit = {
       method: 'POST',
       headers: myHeaders,
       body: raw,
@@ -51,16 +61,15 @@ export default function Login() {
     };
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/users/login/', requestOptions);
+      const response = await fetch('https://prochild-back-proud-star-4651.fly.dev/users/login/', requestOptions);
       const result = await response.json();
 
-      console.log('Resposta do servidor:', result); // Verifique a resposta do servidor
+      console.log('Resposta do servidor:', result); 
 
       if (response.ok) {
         console.log('Login bem-sucedido:', result);
         Alert.alert('Sucesso', 'Login realizado com sucesso!');
 
-        // Salva o token e/ou user_id no AsyncStorage
         if (result.token) {
           await AsyncStorage.setItem('token', result.token);
         }
@@ -68,7 +77,7 @@ export default function Login() {
           await AsyncStorage.setItem('user_id', String(result.id));
         }
 
-        router.push(routes.homePage); // Redireciona para a rota home
+        router.push(routes.homePage); 
       } else {
         console.error('Erro no login:', result);
         Alert.alert('Erro', result.message || 'Falha ao realizar login.');

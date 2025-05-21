@@ -12,19 +12,18 @@ export default function EditHealthCenter() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  // Carrega dados atuais
   useEffect(() => {
     const fetchDetails = async () => {
       setLoading(true);
       const myHeaders = new Headers();
       myHeaders.append('Cookie', 'csrftoken=kIXQNyPmD8kZSIkPOTj6mWZdE2GhtKnu');
-      const requestOptions = {
+      const requestOptions : RequestInit = {
         method: 'GET',
         headers: myHeaders,
         redirect: 'follow',
       };
       try {
-        const response = await fetch(`http://127.0.0.1:8000/healthcenters/${id}`, requestOptions);
+        const response = await fetch(`https://prochild-back-proud-star-4651.fly.dev/healthcenters/${id}`, requestOptions);
         const result = await response.json();
         const data = result['Centro de Saúde'];
         setNome(data.nome || '');
@@ -39,7 +38,6 @@ export default function EditHealthCenter() {
     if (id) fetchDetails();
   }, [id]);
 
-  // Função para salvar edição
   const handleSave = async () => {
     if (saving) return;
     if (!nome || !telefone) {
@@ -58,7 +56,7 @@ export default function EditHealthCenter() {
       descricao,
     });
 
-    const requestOptions = {
+    const requestOptions : RequestInit = {
       method: 'PUT',
       headers: myHeaders,
       body: raw,
@@ -66,7 +64,7 @@ export default function EditHealthCenter() {
     };
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/healthcenters/edit/${id}/`, requestOptions);
+      const response = await fetch(`https://prochild-back-proud-star-4651.fly.dev/healthcenters/edit/${id}/`, requestOptions);
       const result = await response.text();
       if (response.ok) {
         Alert.alert('Sucesso', 'Centro de saúde atualizado!');

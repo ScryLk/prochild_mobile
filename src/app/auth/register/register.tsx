@@ -49,7 +49,7 @@ export default function Register() {
     };
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/users/register/', requestOptions);
+      const response = await fetch('https://prochild-back-proud-star-4651.fly.dev/users/register/', requestOptions);
       const result = await response.json();
 
       console.log('Resposta do servidor:', result);

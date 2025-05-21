@@ -1,89 +1,73 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, FlatList, TouchableOpacity, ActivityIndicator } from "react-native";
-import { useRouter } from "expo-router";
-
-type Category = {
-  id: string;
-  nome: string;
-  treinamentos: Training[]; // Adicionamos os treinamentos dentro da categoria
-};
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { useRouter } from 'expo-router';
 
 type Training = {
   id: string;
   titulo: string;
   descricao: string;
+  categoria_nome: string;
+};
+
+type Category = {
+  nome: string;
+  treinamentos: Training[];
 };
 
 export default function Search() {
-  const [searchQuery, setSearchQuery] = useState(""); // Estado para o texto de busca
-  const [categories, setCategories] = useState<{ nome: string; treinamentos: Training[] }[]>([]); // Estado para categorias com treinamentos
-  const [loading, setLoading] = useState(false); // Estado para carregamento
+  const [searchQuery, setSearchQuery] = useState('');
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    const fetchData = async (categoryId: string) => {
+    const fetchData = async () => {
       setLoading(true);
       try {
-        const requestOptions = {
-          method: "GET",
-          redirect: "follow",
+        const requestOptions: RequestInit = {
+          method: 'GET',
+          redirect: 'follow',
         };
-  
-        const response = await fetch(`http://127.0.0.1:8000/trainings/trainings/categorie/${categoryId}`, requestOptions);
+
+        const response = await fetch(
+          'https://prochild-back-proud-star-4651.fly.dev/trainings/trainings/',
+          requestOptions
+        );
         const data = await response.json();
-  
-        console.log("Dados recebidos da API:", data); // Para depuração
-  
-        // Verifica se data.success existe e é um array
+
         if (data.success && Array.isArray(data.success)) {
-          const groupedCategories = data.success.reduce((acc: any, training: any) => {
+          const groupedCategories = data.success.reduce((acc: Category[], training: Training) => {
             const categoryName = training.categoria_nome;
-  
-            // Verifica se a categoria já existe no acumulador
-            const existingCategory = acc.find((cat: any) => cat.nome === categoryName);
-  
-            if (existingCategory) {
-              // Adiciona o treinamento à categoria existente
-              existingCategory.treinamentos.push(training);
-            } else {
-              // Cria uma nova categoria com o treinamento
-              acc.push({
-                nome: categoryName,
-                treinamentos: [training],
-              });
+            let category = acc.find((cat) => cat.nome === categoryName);
+            if (!category) {
+              category = { nome: categoryName, treinamentos: [] };
+              acc.push(category);
             }
-  
+            category.treinamentos.push(training);
             return acc;
           }, []);
-  
           setCategories(groupedCategories);
         } else {
-          console.error("Erro: data.success não é um array ou está ausente.", data);
-          setCategories([]); 
+          setCategories([]);
         }
       } catch (error) {
-        console.error("Erro ao buscar dados:", error);
+        setCategories([]);
       } finally {
         setLoading(false);
       }
     };
-  
+
     fetchData();
   }, []);
 
-  // Filtra os treinamentos dentro de cada categoria com base no texto de busca
-  const filteredCategories = categories.map((category) => {
-    const filteredTrainings = Array.isArray(category.treinamentos)
-      ? category.treinamentos.filter((training) =>
-          training.titulo.toLowerCase().includes(searchQuery.toLowerCase())
-        )
-      : []; // Se `treinamentos` não for um array, retorna um array vazio
-
-    return { ...category, treinamentos: filteredTrainings };
-  });
-
-  // Remove categorias que não possuem treinamentos correspondentes
-  const categoriesWithTrainings = filteredCategories.filter((category) => category.treinamentos.length > 0);
+  const filteredCategories = categories
+    .map((category) => {
+      const filteredTrainings = category.treinamentos.filter((training) =>
+        training.titulo.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      return { ...category, treinamentos: filteredTrainings };
+    })
+    .filter((category) => category.treinamentos.length > 0);
 
   if (loading) {
     return (
@@ -94,40 +78,37 @@ export default function Search() {
   }
 
   return (
-    <View className="flex-1 p-4 bg-white">
-      {/* Campo de busca */}
+    <View className="flex-1 bg-white p-4">
       <TextInput
-        className="border border-gray-300 rounded-md p-2 mb-4"
+        className="mb-4 rounded-md border border-gray-300 p-2"
         placeholder="Buscar treinamentos..."
         value={searchQuery}
         onChangeText={setSearchQuery}
       />
 
-      {/* Lista de categorias com treinamentos */}
       <FlatList
-        data={categoriesWithTrainings}
+        data={filteredCategories}
         keyExtractor={(item) => item.nome}
         renderItem={({ item: category }) => (
           <View className="mb-4">
-            {/* Nome da categoria */}
-            <Text className="text-[18px] font-bold mb-2">{category.nome}</Text>
-
-            {/* Lista de treinamentos dentro da categoria */}
+            <Text className="mb-2 text-[18px] font-bold">{category.nome}</Text>
             <FlatList
               data={category.treinamentos}
               keyExtractor={(training) => training.id.toString()}
               renderItem={({ item: training }) => (
                 <TouchableOpacity
-                  className="p-4 border border-gray-300 rounded-md mb-2"
+                  className="mb-2 rounded-md border border-gray-300 p-4"
                   onPress={() =>
                     router.push({
                       pathname: `/pages/trainings/trainingsDetails/trainingsDetails`,
                       params: { trainingId: training.id },
                     })
-                  }
-                >
+                  }>
                   <Text className="text-[16px] font-bold">{training.titulo}</Text>
-                  <Text className="text-[14px] text-gray-600" numberOfLines={2} ellipsizeMode="tail">
+                  <Text
+                    className="text-[14px] text-gray-600"
+                    numberOfLines={2}
+                    ellipsizeMode="tail">
                     {training.descricao}
                   </Text>
                 </TouchableOpacity>

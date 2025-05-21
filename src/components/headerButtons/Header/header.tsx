@@ -9,7 +9,7 @@ interface HeaderProps {
   showBackButton?: boolean;
   showPlusButton?: boolean;
   onPlusPress?: () => void;
-  plusButtonRoute?: string; // <-- nova prop
+  plusButtonRoute?: string; 
 }
 
 export default function Header({
@@ -17,21 +17,20 @@ export default function Header({
   showFilter = false,
   onFilterPress,
   showBackButton = false,
-  showPlusButton = false, // Nova prop
-  onPlusPress, // Callback para o botão de adicionar
-  plusButtonRoute, // <-- adicione aqui!
+  showPlusButton = false, 
+  onPlusPress, 
+  plusButtonRoute, 
 }: HeaderProps) {
-  const router = useRouter(); // Hook do Expo Router para navegação
+  const router = useRouter(); 
 
   return (
     <View className="relative flex h-24 flex-row items-center bg-black px-4">
-      {/* Botão de voltar */}
       {showBackButton && (
         <TouchableOpacity
           className="fixed"
           onPress={() => {
             try {
-              router.back(); // Volta para a página anterior
+              router.back();
             } catch (error) {
               console.warn('Erro ao tentar voltar:', error);
             }
@@ -40,10 +39,8 @@ export default function Header({
         </TouchableOpacity>
       )}
 
-      {/* Título centralizado */}
       <Text className="flex-1 text-center text-2xl font-bold capitalize text-white">{title}</Text>
 
-      {/* Botão de filtro */}
       {showFilter && (
         <TouchableOpacity
           style={{ position: 'absolute', right: showPlusButton ? 56 : 16 }} // Ajusta a posição se o botão de adicionar também estiver visível

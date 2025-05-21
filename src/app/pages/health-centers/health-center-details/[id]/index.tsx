@@ -16,14 +16,18 @@ export default function HealthCenterDetails() {
     const fetchDetails = async () => {
       const myHeaders = new Headers();
       myHeaders.append('Cookie', 'csrftoken=kIXQNyPmD8kZSIkPOTj6mWZdE2GhtKnu');
-      const requestOptions = {
+
+      const requestOptions: RequestInit = {
         method: 'GET',
         headers: myHeaders,
         redirect: 'follow',
       };
 
       try {
-        const response = await fetch(`http://127.0.0.1:8000/healthcenters/${id}`, requestOptions);
+        const response = await fetch(
+          `https://prochild-back-proud-star-4651.fly.dev/healthcenters/${id}`,
+          requestOptions
+        );
         const result = await response.json();
         setHealthCenter(result['Centro de Saúde']);
       } catch (error) {
@@ -43,37 +47,36 @@ export default function HealthCenterDetails() {
 
   const handleDelete = async () => {
     setOpen(false);
-    Alert.alert(
-      'Excluir',
-      'Tem certeza que deseja excluir este centro de saúde?',
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        {
-          text: 'Excluir',
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              const myHeaders = new Headers();
-              myHeaders.append('Cookie', 'csrftoken=kIXQNyPmD8kZSIkPOTj6mWZdE2GhtKnu');
-              const requestOptions = {
-                method: 'DELETE',
-                headers: myHeaders,
-                redirect: 'follow',
-              };
-              const response = await fetch(`http://127.0.0.1:8000/healthcenters/delete/${id}`, requestOptions);
-              if (response.ok) {
-                Alert.alert('Sucesso', 'Centro de saúde excluído!');
-                router.back();
-              } else {
-                Alert.alert('Erro', 'Não foi possível excluir.');
-              }
-            } catch (error) {
-              Alert.alert('Erro', 'Erro ao excluir.');
+    Alert.alert('Excluir', 'Tem certeza que deseja excluir este centro de saúde?', [
+      { text: 'Cancelar', style: 'cancel' },
+      {
+        text: 'Excluir',
+        style: 'destructive',
+        onPress: async () => {
+          try {
+            const myHeaders = new Headers();
+            myHeaders.append('Cookie', 'csrftoken=kIXQNyPmD8kZSIkPOTj6mWZdE2GhtKnu');
+            const requestOptions: RequestInit = {
+              method: 'DELETE',
+              headers: myHeaders,
+              redirect: 'follow',
+            };
+            const response = await fetch(
+              `https://prochild-back-proud-star-4651.fly.dev/healthcenters/delete/${id}`,
+              requestOptions
+            );
+            if (response.ok) {
+              Alert.alert('Sucesso', 'Centro de saúde excluído!');
+              router.back();
+            } else {
+              Alert.alert('Erro', 'Não foi possível excluir.');
             }
-          },
+          } catch (error) {
+            Alert.alert('Erro', 'Erro ao excluir.');
+          }
         },
-      ]
-    );
+      },
+    ]);
   };
 
   if (loading) {
@@ -131,7 +134,6 @@ export default function HealthCenterDetails() {
         </View>
       </View>
 
-      {/* Speed Dial */}
       <FAB.Group
         open={open}
         visible

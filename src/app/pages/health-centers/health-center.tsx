@@ -11,7 +11,6 @@ type HealthCenter = {
   nome: string;
   endereco: string;
   descricao: string;
-  // adicione outros campos conforme necessário
 };
 
 export default function HealthCenter() {
@@ -44,7 +43,7 @@ export default function HealthCenter() {
       const myHeaders = new Headers();
       myHeaders.append('Cookie', 'csrftoken=kIXQNyPmD8kZSIkPOTj6mWZdE2GhtKnu');
 
-      const requestOptions = {
+      const requestOptions: RequestInit = {
         method: 'GET',
         headers: myHeaders,
         redirect: 'follow',
@@ -52,13 +51,13 @@ export default function HealthCenter() {
 
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/healthcenters/healthcenters/users/${userId}`,
+          `https://prochild-back-proud-star-4651.fly.dev/healthcenters/healthcenters/users/${userId}`,
           requestOptions
         );
         const result = await response.json();
 
         if (response.ok) {
-          setHealthCenters(result.success); // Corrigido para acessar o array correto
+          setHealthCenters(result.success);
         } else {
           Alert.alert('Erro', 'Não foi possível carregar os centros de saúde.');
         }
@@ -81,7 +80,7 @@ export default function HealthCenter() {
         showFilter={false}
         showBackButton={true}
         showPlusButton={true}
-        plusButtonRoute={routes.AddHealthCenter} // exemplo de rota dinâmica
+        plusButtonRoute={routes.AddHealthCenter}
       />
 
       {loading ? (

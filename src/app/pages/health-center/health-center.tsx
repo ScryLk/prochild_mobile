@@ -47,7 +47,7 @@ export default function HealthCenter() {
       };
 
       try {
-        const response = await fetch(`http://127.0.0.1:8000/healthcenters/healthcenters/users/${userId}`, requestOptions);
+        const response = await fetch(`https://prochild-back-proud-star-4651.fly.dev/healthcenters/healthcenters/users/${userId}`, requestOptions);
         const result = await response.json();
 
         if (response.ok) {

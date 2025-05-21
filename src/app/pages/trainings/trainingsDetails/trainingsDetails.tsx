@@ -25,7 +25,7 @@ export default function TrainingDetails() {
   useEffect(() => {
     const fetchTrainingDetails = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/trainings/trainings/${trainingId}`);
+        const response = await fetch(`https://prochild-back-proud-star-4651.fly.dev/trainings/trainings/${trainingId}`);
         const data = await response.json();
         console.log("Dados do treinamento:", data); // Verifica o retorno da API
         setTraining(data.success); // Atualiza o estado com os detalhes do treinamento

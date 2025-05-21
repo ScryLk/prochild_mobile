@@ -52,7 +52,7 @@ export default function EmergencyCalls() {
       const myHeaders = new Headers();
       myHeaders.append('Cookie', 'csrftoken=kIXQNyPmD8kZSIkPOTj6mWZdE2GhtKnu');
 
-      const requestOptions = {
+      const requestOptions: RequestInit = {
         method: 'GET',
         headers: myHeaders,
         redirect: 'follow',
@@ -60,7 +60,7 @@ export default function EmergencyCalls() {
 
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/healthcenters/healthcenters/users/${userId}`,
+          `https://prochild-back-proud-star-4651.fly.dev/healthcenters/healthcenters/users/${userId}`,
           requestOptions
         );
         const result = await response.json();
@@ -96,7 +96,8 @@ export default function EmergencyCalls() {
       ) : (
         <View className="p-4">
           {healthCenters.length > 0 ? (
-            <RadioButton.Group onValueChange={setSelectedId} value={selectedId}>
+            <RadioButton.Group onValueChange={setSelectedId} value={selectedId ?? ''}>
+              {' '}
               <FlatList
                 data={healthCenters}
                 keyExtractor={(item) => String(item.id)}
@@ -105,13 +106,10 @@ export default function EmergencyCalls() {
                     onPress={() => setSelectedId(String(item.id))}
                     className="mb-4 flex-row items-center justify-between bg-white px-3 py-2"
                     activeOpacity={0.8}>
-                    {/* Ícone à esquerda */}
                     <View className="mr-3 h-10 w-10 items-center justify-center rounded-full bg-gray-100">
                       <HeartPlus />
                     </View>
-                    {/* Nome ao centro */}
                     <Text className="flex-1 text-base font-bold text-neutral-800">{item.nome}</Text>
-                    {/* Círculo maior para o radio */}
                     <View className="h-10 w-10 items-center justify-center rounded-full bg-gray-100">
                       <RadioButton
                         value={String(item.id)}
@@ -130,8 +128,6 @@ export default function EmergencyCalls() {
               <Text className="text-gray-500">Nenhum centro de saúde encontrado.</Text>
             </View>
           )}
-
-          {/* Botão de emergência */}
           <View className="mt-8 items-center">
             <TouchableOpacity
               className={`rounded-3xl px-8 py-3 ${selectedId ? 'bg-red-600' : 'bg-gray-300'}`}

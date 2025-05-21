@@ -22,7 +22,7 @@ export default function Trainings() {
   useEffect(() => {
     const fetchTrainings = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/trainings/trainings/categorie/${categoryId}`);
+        const response = await fetch(`https://prochild-back-proud-star-4651.fly.dev/trainings/trainings/categorie/${categoryId}`);
         const data = await response.json();
 
         if (data.success && Array.isArray(data.success)) {

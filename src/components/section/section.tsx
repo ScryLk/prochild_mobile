@@ -23,7 +23,7 @@ export default function Section() {
   useEffect(() => {
     const fetchSections = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8000/sections/sections/");
+        const response = await fetch("https://prochild-back-proud-star-4651.fly.dev/sections/sections/");
         const data = await response.json();
         if (data.Sucesso && Array.isArray(data.Sucesso)) {
           setSections(data.Sucesso);
@@ -45,7 +45,7 @@ export default function Section() {
       const categoriesMap: Record<string, Category[]> = {};
       for (const section of sections) {
         try {
-          const response = await fetch(`http://127.0.0.1:8000/categories/categories/sections/${section.id}`);
+          const response = await fetch(`https://prochild-back-proud-star-4651.fly.dev/categories/categories/sections/${section.id}`);
           const data = await response.json();
           if (data.success && Array.isArray(data.success)) {
             categoriesMap[section.id] = data.success;
