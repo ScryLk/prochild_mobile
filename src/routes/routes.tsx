@@ -1,7 +1,6 @@
 const routes = {
-  home: "/",
-  register: "/auth/register/register",
   login: "/auth/login/login",
+  register: "/auth/register/register",
   forgotPassword: "auth/forgot-password/forgot-password",
   homePage: "/(tabs)/inicio",
   trainings: "/trainings/[categoryId]",

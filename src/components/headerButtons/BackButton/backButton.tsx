@@ -3,7 +3,7 @@ import { ChevronLeft } from "lucide-react-native";
 import { useRouter } from "expo-router";
 
 export default function BackButton() {
-  const router = useRouter(); // Usa o hook useRouter para navegação
+  const router = useRouter(); 
 
   return (
     <TouchableOpacity onPress={() => router.back()}>

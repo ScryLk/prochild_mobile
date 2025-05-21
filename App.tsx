@@ -7,7 +7,7 @@ import './global.css';
 
 export default function App() {
   return (
-     <View style={{ flex: 1, backgroundColor: 'black' }}>
+     <View>
       <StatusBar style="light" />
     </View>
   );

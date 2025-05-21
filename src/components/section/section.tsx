@@ -93,7 +93,6 @@ export default function Section() {
                   color?: string;
                   size?: number;
                 }>;
-                // Adiciona margem à direita, exceto no último item da linha (pares)
                 const isLastOfRow = (idx + 1) % 2 === 0;
                 return (
                   <Link
