@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, ActivityIndicator } from "react-native";
-import * as LucideIcons from "lucide-react-native";
-import { Link } from "expo-router";
+import React, { useEffect, useState } from 'react';
+import { View, Text, ActivityIndicator } from 'react-native';
+import * as LucideIcons from 'lucide-react-native';
+import { Link } from 'expo-router';
 
 type Category = {
   id: string;
@@ -23,15 +23,17 @@ export default function Section() {
   useEffect(() => {
     const fetchSections = async () => {
       try {
-        const response = await fetch("https://prochild-back-proud-star-4651.fly.dev/sections/sections/");
+        const response = await fetch(
+          'https://prochild-back-proud-star-4651.fly.dev/sections/sections/'
+        );
         const data = await response.json();
         if (data.Sucesso && Array.isArray(data.Sucesso)) {
           setSections(data.Sucesso);
         } else {
-          console.error("Os dados retornados não são válidos:", data);
+          console.error('Os dados retornados não são válidos:', data);
         }
       } catch (error) {
-        console.error("Erro ao buscar seções:", error);
+        console.error('Erro ao buscar seções:', error);
       } finally {
         setLoading(false);
       }
@@ -45,7 +47,9 @@ export default function Section() {
       const categoriesMap: Record<string, Category[]> = {};
       for (const section of sections) {
         try {
-          const response = await fetch(`https://prochild-back-proud-star-4651.fly.dev/categories/categories/sections/${section.id}`);
+          const response = await fetch(
+            `https://prochild-back-proud-star-4651.fly.dev/categories/categories/sections/${section.id}`
+          );
           const data = await response.json();
           if (data.success && Array.isArray(data.success)) {
             categoriesMap[section.id] = data.success;
@@ -77,32 +81,41 @@ export default function Section() {
     <View className="p-4">
       {sections.map((section) => (
         <View key={section.id} className="mb-6">
-          <Text className="text-[22px] font-bold font-inter mb-4">{section.nome}</Text>
-          <View className="flex flex-row flex-wrap justify-between mt-4">
+          <Text className="mb-4 font-inter text-[22px] font-bold">{section.nome}</Text>
+          <View className="mt-4 flex flex-row flex-wrap justify-start">
             {categoriesBySection[section.id] && categoriesBySection[section.id].length > 0 ? (
-              categoriesBySection[section.id].map((category) => {
-                const Icon = LucideIcons[category.icone_id] as React.ComponentType | undefined;
-                const DefaultIcon = LucideIcons["AlertCircle"]; 
+              categoriesBySection[section.id].map((category, idx, arr) => {
+                const Icon = LucideIcons[category.icone_id] as React.ComponentType<{
+                  color?: string;
+                  size?: number;
+                }>;
+                const DefaultIcon = LucideIcons['AlertCircle'] as React.ComponentType<{
+                  color?: string;
+                  size?: number;
+                }>;
+                // Adiciona margem à direita, exceto no último item da linha (pares)
+                const isLastOfRow = (idx + 1) % 2 === 0;
                 return (
                   <Link
                     key={category.id}
                     href={{
-                      pathname: "pages/trainings/[categoryId]",
+                      pathname: 'pages/trainings/[categoryId]',
                       params: { categoryId: category.id, categoryName: category.nome },
                     }}
-                    className="mb-4"
-                  >
+                    className={`mb-4 ${!isLastOfRow ? 'mr-4' : ''}`}>
                     <View className="relative h-[140px] w-[100px] items-center justify-center rounded-md border border-gray-300 bg-white shadow-md">
                       <View
                         className="h-[60px] w-[60px] items-center justify-center rounded-full"
-                        style={{ backgroundColor: category.cor || "#D3D3D3" }}
-                      >
-                        {Icon ? <Icon color="white" size={28} /> : <DefaultIcon color="white" size={28} />}
+                        style={{ backgroundColor: category.cor || '#D3D3D3' }}>
+                        {Icon ? (
+                          <Icon color="white" size={28} />
+                        ) : (
+                          <DefaultIcon color="white" size={28} />
+                        )}
                       </View>
                       <Text
                         className="mt-3 text-center font-inter text-[14px] font-medium text-gray-800"
-                        numberOfLines={2} 
-                      >
+                        numberOfLines={2}>
                         {category.nome}
                       </Text>
                     </View>
@@ -110,7 +123,9 @@ export default function Section() {
                 );
               })
             ) : (
-              <Text className="text-[16px] font-inter ml-4 text-gray-500">Nenhuma categoria disponível.</Text>
+              <Text className="ml-4 font-inter text-[16px] text-gray-500">
+                Nenhuma categoria disponível.
+              </Text>
             )}
           </View>
         </View>
