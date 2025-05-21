@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity } from 'react-native';
-import { Filter, ChevronLeft, Plus } from 'lucide-react-native'; // Adicionado o ícone Plus
+import { Filter, ChevronLeft, Plus } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 
 interface HeaderProps {
@@ -24,10 +24,10 @@ export default function Header({
   const router = useRouter(); 
 
   return (
-    <View className="relative flex h-24 flex-row items-center bg-black px-4">
+    <View className="relative flex h-24 flex-row items-center px-4">
       {showBackButton && (
         <TouchableOpacity
-          className="fixed"
+          className="fixed w-[48px] h-[48px] items-center justify-center rounded-lg bg-gray-200"
           onPress={() => {
             try {
               router.back();
@@ -35,24 +35,23 @@ export default function Header({
               console.warn('Erro ao tentar voltar:', error);
             }
           }}>
-          <ChevronLeft color="#fff" size={28} />
+          <ChevronLeft color="#000" size={28} />
         </TouchableOpacity>
       )}
 
-      <Text className="flex-1 text-center text-2xl font-bold capitalize text-white">{title}</Text>
+      <Text className="flex-1 text-center text-2xl font-bold capitalize text-black  ">{title}</Text>
 
       {showFilter && (
         <TouchableOpacity
-          style={{ position: 'absolute', right: showPlusButton ? 56 : 16 }} // Ajusta a posição se o botão de adicionar também estiver visível
+          className="fixed w-[48px] h-[48px] items-center justify-center rounded-lg bg-gray-200"
           onPress={onFilterPress}>
-          <Filter color="#fff" size={28} />
+          <Filter color="#000" size={28} />
         </TouchableOpacity>
       )}
 
-      {/* Botão de adicionar */}
       {showPlusButton && (
         <TouchableOpacity
-          style={{ position: 'absolute', right: 16 }}
+          className="fixed w-[48px] h-[48px] items-center justify-center rounded-lg bg-gray-200"
           onPress={() => {
             if (plusButtonRoute) {
               router.push(plusButtonRoute);
@@ -60,7 +59,7 @@ export default function Header({
               onPlusPress();
             }
           }}>
-          <Plus color="#fff" size={28} />
+          <Plus color="#000" size={28} />
         </TouchableOpacity>
       )}
     </View>
