@@ -7,8 +7,8 @@ export default function BackButton() {
 
   return (
     <TouchableOpacity onPress={() => router.back()}>
-      <View className="h-10 w-10 items-center justify-center rounded-md bg-white border-2 border-primaryColor">
-        <ChevronLeft color="#3461FD" size={24} />
+      <View className="fixed w-[48px] h-[48px] items-center justify-center rounded-lg bg-gray-200">
+        <ChevronLeft color="#000" size={28} />
       </View>
     </TouchableOpacity>
   );

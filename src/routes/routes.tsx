@@ -2,7 +2,7 @@ const routes = {
   login: "/auth/login/login",
   register: "/auth/register/register",
   forgotPassword: "auth/forgot-password/forgot-password",
-  homePage: "/(tabs)/inicio",
+  homePage: "/(tabs)/index",
   trainings: "/trainings/[categoryId]",
   TrainingDetails: "/pages/trainings/trainingsDetails/trainingsDetails",
   HealthCenter: "/pages/health-centers/health-center",

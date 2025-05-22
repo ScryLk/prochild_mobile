@@ -8,27 +8,27 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native';
-import { Eye, EyeOff } from 'lucide-react-native'; 
+import { Eye, EyeOff } from 'lucide-react-native';
 import GoogleIcon from '../../../assets/svg/google.svg';
 import GovIcon from '../../../assets/svg/govbr.png';
 import routes from '~/routes/routes';
 import { Link } from 'expo-router';
-import { useRouter } from 'expo-router'; 
+import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Login() {
-  const [email, setEmail] = useState(''); 
-  const [password, setPassword] = useState(''); 
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false); 
+  const [showPassword, setShowPassword] = useState(false);
 
-  const router = useRouter(); 
+  const router = useRouter();
 
   useEffect(() => {
     const checkLogged = async () => {
       const token = await AsyncStorage.getItem('token');
       if (token) {
-        router.replace(routes.homePage);
+        router.replace('/(tabs)');
       }
     };
     checkLogged();
@@ -42,45 +42,46 @@ export default function Login() {
 
     setLoading(true);
 
-    const myHeaders = new Headers();
-    myHeaders.append('Content-Type', 'application/json');
-    myHeaders.append('Accept', 'application/json');
-
     const raw = JSON.stringify({
       email: email,
-      password: password, 
+      password: password,
     });
 
-    console.log('Dados enviados:', raw); 
-
-    const requestOptions : RequestInit = {
-      method: 'POST',
-      headers: myHeaders,
-      body: raw,
-      redirect: 'follow',
-    };
-
     try {
-      const response = await fetch('https://prochild-back-proud-star-4651.fly.dev/users/login/', requestOptions);
-      const result = await response.json();
+      const response = await fetch('http://127.0.0.1:8000/users/login/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: raw,
+      });
 
-      console.log('Resposta do servidor:', result); 
+      const text = await response.text();
+      console.log('Texto bruto da resposta:', text);
 
-      if (response.ok) {
-        console.log('Login bem-sucedido:', result);
-        Alert.alert('Sucesso', 'Login realizado com sucesso!');
+      let result;
+      try {
+        result = JSON.parse(text);
+      } catch (e) {
+        console.error('Erro ao fazer parse do JSON:', e);
+        Alert.alert('Erro', 'Resposta inválida do servidor.');
+        return;
+      }
 
-        if (result.token) {
-          await AsyncStorage.setItem('token', result.token);
-        }
+      if (response.ok && (result.access || result.token)) {
+        const token = result.access || result.token;
+        await AsyncStorage.setItem('token', token);
+
         if (result.id) {
           await AsyncStorage.setItem('user_id', String(result.id));
         }
 
-        router.push(routes.homePage); 
+        Alert.alert('Sucesso', 'Login realizado com sucesso!');
+        router.replace('/(tabs)');
       } else {
         console.error('Erro no login:', result);
-        Alert.alert('Erro', result.message || 'Falha ao realizar login.');
+        Alert.alert('Erro', result?.message || 'Falha ao realizar login.');
       }
     } catch (error) {
       console.error('Erro na requisição:', error);

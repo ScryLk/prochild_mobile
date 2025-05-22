@@ -2,11 +2,25 @@ import { Tabs } from "expo-router";
 import { Home, Download, Search } from "lucide-react-native";
 import Header from "~/components/headerButtons/Header/header";
 
+
+const getHeaderTitle = (routeName: string) => {
+  switch (routeName) {
+    case "index":
+      return "Inicio";
+    case "pesquisar":
+      return "Pesquisar";
+    case "downloads":
+      return "Downloads";
+    default:
+      return routeName;
+  }
+};
+
 export default function Layout() {
   return (
     <Tabs
       screenOptions={{
-        header: ({ route }) => <Header title={route.name} />, 
+        header: ({ route }) => <Header title={getHeaderTitle(route.name)} />,
         tabBarShowLabel: false, 
         tabBarStyle: {
           height: 50,
@@ -17,8 +31,9 @@ export default function Layout() {
       }}
     >
       <Tabs.Screen
-        name="inicio"
+        name="index"
         options={{
+          title:"Inicio",
           tabBarIcon: ({ color, size }) => (
             <Home color={color} size={size} /> 
           ),

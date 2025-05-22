@@ -3,19 +3,19 @@ import { View, Text, TextInput, TouchableOpacity, Alert, ActivityIndicator } fro
 import { Eye, EyeOff } from 'lucide-react-native';
 import { Link } from 'expo-router';
 import routes from '~/routes/routes';
-import { useRouter } from 'expo-router'; // Importa o useRouter
+import { useRouter } from 'expo-router'; 
 
 
 export default function Register() {
-  const [nome, setNome] = useState(''); // Estado para o nome
-  const [email, setEmail] = useState(''); // Estado para o e-mail
-  const [password, setPassword] = useState(''); // Estado para a senha
-  const [confirmPassword, setConfirmPassword] = useState(''); // Estado para confirmar senha
-  const [loading, setLoading] = useState(false); // Estado para carregamento
-  const [showPassword, setShowPassword] = useState(false); // Estado para visibilidade da senha
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // Estado para visibilidade da confirmação de senha
+  const [nome, setNome] = useState(''); 
+  const [email, setEmail] = useState(''); 
+  const [password, setPassword] = useState(''); 
+  const [confirmPassword, setConfirmPassword] = useState(''); 
+  const [loading, setLoading] = useState(false); 
+  const [showPassword, setShowPassword] = useState(false); 
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
 
-  const router = useRouter(); // Inicializa o roteador
+  const router = useRouter(); 
   
 
   const handleRegister = async () => {
@@ -38,10 +38,10 @@ export default function Register() {
       nome: nome,
       email: email,
       password: password,
-      role: 'admin', // Ajuste conforme necessário
+      role: 'user', 
     });
 
-    const requestOptions = {
+    const requestOptions : RequestInit = {
       method: 'POST',
       headers: myHeaders,
       body: raw,
@@ -56,8 +56,7 @@ export default function Register() {
 
       if (response.ok) {
         Alert.alert('Sucesso', 'Cadastro realizado com sucesso!');
-        // Redireciona para a tela de login
-        router.push(routes.login); // Redireciona para a rota home
+        router.push(routes.login); 
       } else {
         Alert.alert('Erro', result.message || 'Falha ao realizar o cadastro.');
       }
@@ -96,6 +95,8 @@ export default function Register() {
           secureTextEntry={!showPassword}
           className="flex-1 text-black"
           value={password}
+          textContentType='none'
+          autoComplete='off'
           onChangeText={setPassword}
           autoCapitalize="none"
         />
@@ -115,6 +116,8 @@ export default function Register() {
           className="flex-1 text-black"
           value={confirmPassword}
           onChangeText={setConfirmPassword}
+          textContentType='none'
+          autoComplete='off'
           autoCapitalize="none"
         />
         <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
