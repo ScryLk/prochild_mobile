@@ -19,9 +19,11 @@ export default function HealthCenter() {
     const getUserIdAndFetch = async () => {
       try {
         const storedUserId = await AsyncStorage.getItem('user_id');
+
         if (storedUserId) {
           setUserId(Number(storedUserId));
         } else {
+          console.log('user_id recuperado do AsyncStorage:', storedUserId); // <-- Adicione esta linha
           Alert.alert('Erro', 'Usuário não encontrado.');
           setLoading(false);
         }

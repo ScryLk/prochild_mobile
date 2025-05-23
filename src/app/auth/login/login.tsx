@@ -73,8 +73,16 @@ export default function Login() {
         const token = result.access || result.token;
         await AsyncStorage.setItem('token', token);
 
-        if (result.id) {
-          await AsyncStorage.setItem('user_id', String(result.id));
+        console.log(result);
+
+        if (result.access) {
+          // Decodifica o JWT para pegar o user_id
+          const payload = JSON.parse(atob(result.access.split('.')[1]));
+          if (payload.user_id) {
+            await AsyncStorage.setItem('user_id', String(payload.user_id));
+            const savedId = await AsyncStorage.getItem('user_id');
+            console.log('user_id salvo no login:', savedId); // <-- Adicione este log
+          }
         }
 
         Alert.alert('Sucesso', 'Login realizado com sucesso!');
