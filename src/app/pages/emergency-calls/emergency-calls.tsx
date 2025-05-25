@@ -97,7 +97,6 @@ export default function EmergencyCalls() {
         <View className="p-4">
           {healthCenters.length > 0 ? (
             <RadioButton.Group onValueChange={setSelectedId} value={selectedId ?? ''}>
-              {' '}
               <FlatList
                 data={healthCenters}
                 keyExtractor={(item) => String(item.id)}

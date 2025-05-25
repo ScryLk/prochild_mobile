@@ -15,6 +15,14 @@ type Section = {
   nome: string;
 };
 
+function chunkArray<T>(array: T[], size: number): T[][] {
+  const result: T[][] = [];
+  for (let i = 0; i < array.length; i += size) {
+    result.push(array.slice(i, i + size));
+  }
+  return result;
+}
+
 export default function Section() {
   const [sections, setSections] = useState<Section[]>([]);
   const [loading, setLoading] = useState(true);
@@ -79,56 +87,56 @@ export default function Section() {
 
   return (
     <View className="p-4">
-      {sections.map((section) => (
-        <View key={section.id} className="mb-6">
-          <Text className="mb-4 font-inter text-[22px] font-bold">{section.nome}</Text>
-          <View className="mt-4 flex flex-row flex-wrap justify-start">
-            {categoriesBySection[section.id] && categoriesBySection[section.id].length > 0 ? (
-              categoriesBySection[section.id].map((category, idx, arr) => {
-                const Icon = LucideIcons[category.icone_id] as React.ComponentType<{
-                  color?: string;
-                  size?: number;
-                }>;
-                const DefaultIcon = LucideIcons['AlertCircle'] as React.ComponentType<{
-                  color?: string;
-                  size?: number;
-                }>;
-                const isLastOfRow = (idx + 1) % 2 === 0;
-                return (
-                  <Link
-                    key={category.id}
-                    href={{
-                      pathname: 'pages/trainings/[categoryId]',
-                      params: { categoryId: category.id, categoryName: category.nome },
-                    }}
-                    className={`mb-4 ${!isLastOfRow ? 'mr-4' : ''}`}>
-                    <View className="relative h-[140px] w-[100px] items-center justify-center rounded-md border border-gray-300 bg-white shadow-md">
-                      <View
-                        className="h-[60px] w-[60px] items-center justify-center rounded-full"
-                        style={{ backgroundColor: category.cor || '#D3D3D3' }}>
-                        {Icon ? (
-                          <Icon color="white" size={28} />
-                        ) : (
-                          <DefaultIcon color="white" size={28} />
-                        )}
-                      </View>
-                      <Text
-                        className="mt-3 text-center font-inter text-[14px] font-medium text-gray-800"
-                        numberOfLines={2}>
-                        {category.nome}
-                      </Text>
+    {sections.map((section) => (
+      <View key={section.id} className="mb-6">
+        <Text className="mb-4 font-inter text-[22px] font-bold">{section.nome}</Text>
+        <View className="mt-4 flex flex-row flex-wrap justify-between">
+          {categoriesBySection[section.id] && categoriesBySection[section.id].length > 0 ? (
+            categoriesBySection[section.id].map((category) => {
+              const Icon = LucideIcons[category.icone_id] as React.ComponentType<{
+                color?: string;
+                size?: number;
+              }>;
+              const DefaultIcon = LucideIcons['AlertCircle'] as React.ComponentType<{
+                color?: string;
+                size?: number;
+              }>;
+              return (
+                <Link
+                  key={category.id}
+                  href={{
+                    pathname: 'pages/trainings/[categoryId]',
+                    params: { categoryId: category.id, categoryName: category.nome },
+                  }}
+                  className="mb-4 h-[140px] w-[100px]"
+                >
+                  <View className="items-center justify-center rounded-md border border-gray-300 bg-white shadow-md h-full w-full">
+                    <View
+                      className="h-[60px] w-[60px] items-center justify-center rounded-full"
+                      style={{ backgroundColor: category.cor || '#D3D3D3' }}>
+                      {Icon ? (
+                        <Icon color="white" size={28} />
+                      ) : (
+                        <DefaultIcon color="white" size={28} />
+                      )}
                     </View>
-                  </Link>
-                );
-              })
-            ) : (
-              <Text className="ml-4 font-inter text-[16px] text-gray-500">
-                Nenhuma categoria disponível.
-              </Text>
-            )}
-          </View>
+                    <Text
+                      className="mt-3 text-center font-inter text-[14px] font-medium text-gray-800"
+                      numberOfLines={2}>
+                      {category.nome}
+                    </Text>
+                  </View>
+                </Link>
+              );
+            })
+          ) : (
+            <Text className="ml-4 font-inter text-[16px] text-gray-500">
+              Nenhuma categoria disponível.
+            </Text>
+          )}
         </View>
-      ))}
-    </View>
+      </View>
+    ))}
+  </View>
   );
 }
